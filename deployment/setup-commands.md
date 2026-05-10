@@ -30,4 +30,4 @@ kubectl apply -f manifests/2048_full.yaml
 
 ## Application Screenshot
 
-![2048 App](./images/2048-app.png)
+![2048 App](../images/2048-app.png)
