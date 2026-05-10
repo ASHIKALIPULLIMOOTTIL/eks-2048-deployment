@@ -68,7 +68,6 @@ Amazon EKS Cluster  ── demo-cluster (ap-south-1)
 - AWS CLI installed and configured
 - `kubectl`, `eksctl`, and `helm` installed on your machine
 
-> All installation and configuration commands are available in the [`/commands`](./commands) folder.
 
 ---
 
