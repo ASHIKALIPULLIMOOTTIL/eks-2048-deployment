@@ -50,23 +50,6 @@ kubectl apply -f manifests/2048_full.yaml
 ```
 
 ---
-
-## 📸 Screenshots
-
-### Running Pods
-
-![Pods](screenshots/pods.png)
-
-### Ingress
-
-![Ingress](screenshots/ingress.png)
-
-### Application
-
-![App](screenshots/app.png)
-
----
-
 ## 📌 Learning Outcome
 
 - Hands-on experience with Amazon EKS
