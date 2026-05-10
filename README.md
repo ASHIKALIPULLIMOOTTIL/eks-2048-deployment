@@ -16,39 +16,36 @@ A production-style Kubernetes deployment on **AWS EKS with Fargate**, exposing t
 - [Tech Stack](#tech-stack)
 - [Prerequisites](#prerequisites)
 - [Deployment Steps](#deployment-steps)
-- [Verification](#verification)
-- [Project Structure](#project-structure)
 - [Key Concepts](#key-concepts)
-- [Cleanup](#cleanup)
+- [Learning Outcomes](#learning-outcomes)
 - [References](#references)
 
 ---
 
 ## Architecture
 
-\```
+```text
 Internet
     │
     ▼
 AWS Application Load Balancer (ALB)
-    │  (provisioned via AWS Load Balancer Controller + Kubernetes Ingress)
+    │  (Provisioned using AWS Load Balancer Controller + Kubernetes Ingress)
     ▼
-Kubernetes Ingress  ──  ingress-2048  (class: alb)
+Kubernetes Ingress  ── ingress-2048 (class: alb)
     │
     ▼
-Kubernetes Service  ──  service-2048  (NodePort)
+Kubernetes Service  ── service-2048 (NodePort)
     │
     ▼
-Deployment: deployment-2048  (5 replicas)
+Deployment  ── deployment-2048 (5 replicas)
     │
     ▼
-AWS Fargate  (Serverless — no EC2 nodes to manage)
+AWS Fargate
+(Serverless compute — no EC2 nodes to manage)
     │
     ▼
-EKS Cluster: demo-cluster  (ap-south-1 / Mumbai)
-\```
-
----
+Amazon EKS Cluster  ── demo-cluster (ap-south-1)
+```
 
 ## Tech Stack
 
@@ -112,38 +109,6 @@ Add the EKS Helm chart repository and install the controller into the `kube-syst
 ### 11. Verify the Deployment
 Confirm the controller pods are running and that the Ingress has been assigned an ALB DNS address.
 
----
-
-## Verification
-
-Once the ALB is fully provisioned (typically 2–3 minutes after Step 11), retrieve the Ingress address and open it in your browser to access the live 2048 game.
-
-\```
-NAME           CLASS   HOSTS   ADDRESS                                                                   PORTS
-ingress-2048   alb     *       k8s-game2048-ingress2-xxxxxxxx.ap-south-1.elb.amazonaws.com               80
-\```
-
----
-
-## Project Structure
-
-\```
-.
-├── README.md
-├── commands/
-│   ├── 01-install-eksctl.sh
-│   ├── 02-configure-aws.sh
-│   ├── 03-create-cluster.sh
-│   ├── 04-update-kubeconfig.sh
-│   ├── 05-create-fargate-profile.sh
-│   ├── 06-deploy-app.sh
-│   ├── 07-associate-oidc.sh
-│   ├── 08-create-iam-policy.sh
-│   ├── 09-create-service-account.sh
-│   ├── 10-install-alb-controller.sh
-│   └── 11-verify.sh
-└── iam_policy.json
-\```
 
 ---
 
@@ -158,15 +123,18 @@ ingress-2048   alb     *       k8s-game2048-ingress2-xxxxxxxx.ap-south-1.elb.ama
 **OIDC Provider** — Enables IAM Roles for Service Accounts (IRSA), allowing Kubernetes workloads to assume IAM roles securely without embedding credentials.
 
 **eksctl** — An official CLI tool for creating and managing EKS clusters, backed by AWS CloudFormation under the hood.
-
 ---
 
-## Cleanup
+## Learning Outcomes
 
-To avoid ongoing AWS charges, delete all resources when you are done. Refer to the [`/commands`](./commands) folder for the full cleanup commands.
-
-This removes the EKS cluster, all Fargate profiles, CloudFormation stacks, and the associated IAM service account role. Remember to also delete the IAM policy created in Step 8 if it is no longer needed.
-
+- Provisioned a fully managed **EKS cluster** using `eksctl` with **AWS Fargate** as the serverless compute backend — no EC2 node management required
+- Configured **Fargate profiles** to selectively schedule application pods onto serverless infrastructure based on namespace
+- Deployed a containerized application on Kubernetes using **Deployments**, **Services**, and **Ingress** resources
+- Set up the **AWS Load Balancer Controller** using Helm to automatically provision an ALB from a Kubernetes Ingress resource
+- Established **IAM Roles for Service Accounts (IRSA)** by associating an OIDC provider and binding IAM policies to Kubernetes service accounts
+- Understood the end-to-end request flow from the public internet through an ALB → Ingress → Service → Pod on Fargate
+- Gained hands-on experience with **Helm** for managing Kubernetes add-on deployments
+- Practiced real-world **IAM policy scoping** for the principle of least privilege in an EKS environment
 ---
 
 ## References
