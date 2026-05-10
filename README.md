@@ -123,6 +123,7 @@ Confirm the controller pods are running and that the Ingress has been assigned a
 **OIDC Provider** — Enables IAM Roles for Service Accounts (IRSA), allowing Kubernetes workloads to assume IAM roles securely without embedding credentials.
 
 **eksctl** — An official CLI tool for creating and managing EKS clusters, backed by AWS CloudFormation under the hood.
+
 ---
 
 ## Learning Outcomes
